@@ -1,0 +1,23 @@
+{
+    "manifest_version": 2,
+  
+    "name": "JW TV subtitle download",
+    "description": "This extension allows the user to download the subtitle on JW TV.",
+    "version": "1.0",
+
+    "icons": {
+      "16": "yo.png",
+      "48": "yo.png",
+      "128": "yo.png"
+    },
+    "browser_action": {
+      "default_icon": "yo.png",
+      "default_popup": "popup.html"
+    },
+    "permissions": [
+      "activeTab",
+      "storage",
+      "tabs",
+      "debugger"
+    ]
+  }
