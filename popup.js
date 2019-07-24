@@ -7,18 +7,30 @@ window.addEventListener("load", function() {
   })
 }, false)
 
-function generateBtn (items) {
+function generateBtn (items, single) {
   items = JSON.parse(items)
-  let medias = items.category.media
+  let medias 
   let title = items.name
   let buttons = []
+
+  if (single) {
+    medias = items.media
+  } else {
+    medias = items.category.media
+  }
+  
   let noData = document.getElementById("nodata");
   if (buttons.length > 0) { noData.innerHTML = '目前沒有資料'} else { noData.innerHTML = ''}
+
   medias.forEach( media => {
     let data = {}
     data.title = media.title
     data.url = media.files[0].subtitles.url
-    buttons.push(data)
+    if (single) {
+      buttons.unshift(data)
+    } else {
+      buttons.push(data)
+    }
   }) 
   
   buttons.forEach( button => {
@@ -36,6 +48,7 @@ function generateBtn (items) {
       download(newLink)
     }
     newDiv.setAttribute("class", 'column')
+    if (single) { newDiv.setAttribute("class", 'first column') }
     newDiv.appendChild(newLink)
     currentDiv.appendChild(newDiv)
   })
@@ -79,7 +92,7 @@ function onAttach(tabId) {
 }
 
 function allEventHandler(debuggeeId, message, params) {
-  console.log({debuggeeId, message, params})
+  // console.log({debuggeeId, message, params})
   if (currentTab.id != debuggeeId.tabId) {
       return
   }
@@ -91,8 +104,13 @@ function allEventHandler(debuggeeId, message, params) {
         "requestId": params.requestId
     }, function(response) {
       try {
+        console.log({response})
         if (response.body && JSON.parse(response.body) && JSON.parse(response.body).category && JSON.parse(response.body).pagination) {
           generateBtn(response.body)
+          chrome.debugger.detach(debuggeeId)
+        }
+        if (response.body && JSON.parse(response.body).media.length > 0) {
+          generateBtn(response.body, true)
         }
       } catch {
       }
