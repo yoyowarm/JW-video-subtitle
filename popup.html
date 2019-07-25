@@ -1,148 +1,36 @@
 
 <!doctype html>
-<!--
- This page is shown when the extension button is clicked, because the
- "browser_action" field in manifest.json contains the "default_popup" key with
- value "popup.html".
- -->
 <html>
   <head>
     <meta charset="UTF-8">
     <title>Getting Started Extension's Popup</title>
-    <style type="text/css">
-      ::-webkit-scrollbar { 
-        background: #000;
-        width: 6px;
-      }
-      ::-webkit-scrollbar-thumb { 
-        background: #999;
-        border-radius: 20px
-      }
-      html {
-        box-shadow: 0px 0px 10px #666
-      }
-      body {
-        margin: 0px;
-        white-space: nowrap;
-        width: 320px;
-        min-height: 450px;
-        height: auto;
-        text-align: center;
-        padding: 15px;
-        background: #000;
-      }
-
-      h1 {
-        font-size: 15px;
-        color: #fff;
-        padding-bottom: 15px;
-        width: 80%;
-        margin-left: 10%;
-        border-bottom: 1px solid #ddd
-      }
-
-      #container {
-        align-items: flex-start;
-        display: flex;
-        justify-content: start;
-        flex-direction: column;
-        height: 380px;
-        overflow-y: auto;
-        overflow-x: hidden;
-        margin-bottom: 55px
-        /* flex-wrap: wrap; */
-      }
-      .footer {
-        position: absolute;
-        bottom: 0px;
-        left: 0px;
-        height: 53px;
-        width: 100%;
-        background: #000
-      }
-      #res {
-        padding: 6px;
-        color: #fff;
-        font-size: 18px;
-        width: 80%;
-        background: #4a6da7
-      }
-      .column {
-        width: 92%;
-        height: 30px;
-        background: #666;
-        margin: 4px;
-        padding: 3px;
-        padding-left: 10px;
-        font-size: 14px;
-        word-break: break-all;
-        position: relative;
-        text-align: left;
-        display: flex
-      }
-      .column a {
-        width: 100%;
-        display: block;
-        color: #ddd;
-        word-break: break-all;
-        text-decoration-line: none;
-        line-height: 30px;
-        overflow : hidden;
-        text-overflow : ellipsis;
-        white-space : nowrap;
-        cursor: pointer;
-      }
-      .first.column {
-        margin-top: 25px;
-        margin-bottom: 10px;
-        background: #d27830
-      }
-      .first::before {
-        content: '本頁影片';
-        position: absolute;
-        top: -25px;
-        color: #fff;
-        left: 0px;
-        width: 100%;
-        border-bottom: 1px solid #fff
-      }
-      .first::after {
-        content: '';
-        position: absolute;
-        bottom: -6px;
-        color: #fff;
-        left: 0px;
-        width: 100%;
-        border-top: 1px solid #fff
-      }
-      img {
-        width: 17px;
-        height: 17px;
-        margin-top: 6px;
-        margin-right: 3px;
-        -webkit-filter: brightness(0) invert(1);
-        filter: brightness(0) invert(1);
-      }
-    </style>
-
-    <!--
-      - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.
-      -
-      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
-    -->
     <script src="FileSaver.js"></script>
     <script src="popup.js"></script>
-    
+    <link rel="stylesheet" type="text/css" href="popup.css">
   </head>
 
   <body>
-    <h1>Download subtitle</h1>
-    <p id="nodata" style="color: #fff">目前沒有資料</p>
+    <h1>字幕下載 / Download subtitle</h1>
+    <h3>下載選項 / options</h3> 
+    <div class="option-line">
+      <div>
+        <label class="switch js-switch" id="fileName-option" for="txt">
+            <input type="checkbox" id="txt" checked>
+            <div></div>
+        </label>
+      </div>
+      <div>
+        <label class="switch js-switch" id="subtitle-option" for="timeline">
+            <input type="checkbox" id="timeline" checked>
+            <div></div>
+        </label>        
+      </div>
+    </div>
+    <p id="nodata" style="color: #fff; margin-bottom: 0px; margin-top: 5px">目前沒有資料 / no data found</p>
     <div id="container">
     </div>
     <div class="footer">
-        <button id="res">refresh</button>
+        <button id="res">刷新資料 / Refresh</button>
     </div>
   </body>
 </html>

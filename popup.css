@@ -1,0 +1,227 @@
+::-webkit-scrollbar { 
+  background: #171717;
+  width: 6px;
+  border-radius: 20px
+}
+::-webkit-scrollbar-thumb { 
+  background: #484848;
+  border-radius: 20px
+}
+html {
+  box-shadow: 0px 0px 10px #666
+}
+body {
+  margin: 0px;
+  white-space: nowrap;
+  width: 320px;
+  min-height: 450px;
+  height: auto;
+  text-align: center;
+  padding: 15px;
+  background: #2b2b2b;
+}
+
+h1 {
+  font-size: 15px;
+  color: #fff;
+  padding-bottom: 15px;
+  width: 80%;
+  margin-left: 10%;
+  border-bottom: 1px solid #ddd
+}
+h3 {
+  font-size: 13px;
+  color: #c5c5c5;
+  text-align: left;
+  margin-bottom: 5px
+}
+#container {
+  align-items: flex-start;
+  display: flex;
+  justify-content: start;
+  flex-direction: column;
+  height: 380px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-bottom: 55px
+/* flex-wrap: wrap; */
+}
+.footer {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  height: 53px;
+  width: 100%;
+  background: #2b2b2b
+}
+#res {
+  padding: 6px;
+  color: #fff;
+  font-size: 18px;
+  width: 80%;
+  background: #4a6da7;
+  cursor: pointer;
+}
+.column {
+  width: 92%;
+  height: 30px;
+  background: #666;
+  margin: 4px;
+  padding: 3px;
+  padding-left: 10px;
+  font-size: 14px;
+  word-break: break-all;
+  position: relative;
+  text-align: left;
+  display: flex
+}
+.column a {
+  width: 100%;
+  display: block;
+  color: #ddd;
+  word-break: break-all;
+  text-decoration-line: none;
+  line-height: 30px;
+  overflow : hidden;
+  text-overflow : ellipsis;
+  white-space : nowrap;
+  cursor: pointer;
+}
+.first.column {
+  margin-top: 25px;
+  margin-bottom: 10px;
+  background: #d27830
+}
+.first.column a { color: #fff}
+.first::before {
+  content: '本頁影片';
+  position: absolute;
+  top: -25px;
+  color: #ddd;
+  left: 0px;
+  width: 100%;
+  font-size: 13px;
+  border-bottom: 1px solid #fff
+}
+.first::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  color: #fff;
+  left: 0px;
+  width: 100%;
+  border-top: 1px solid #fff
+}
+img {
+  width: 17px;
+  height: 17px;
+  margin-top: 6px;
+  margin-right: 3px;
+  -webkit-filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1);
+}
+
+
+.active {
+  background: #a749e6!important;
+}
+.active#subtitle-option::before {
+  content: 'time line';
+  left: -12px
+}
+.active#fileName-option::before {
+  content: '.vtt';
+  left: -12px
+}
+.option-line {
+  display: flex;
+  justify-content: flex-start;
+  /* margin-top: 22px; */
+}
+.option-line div { position: relative;}
+.tips {
+  position: absolute;
+  color: #ddd;
+  left: 0px;
+  top: -19px
+}
+.switch input {
+  position: absolute;
+  opacity: 0;
+ }
+ 
+ .switch {
+   display: inline-block;
+   font-size: 25px;
+   margin-right: 15px;
+   height: 1em;
+   width: 2.5em;
+   background: #3e8ce6;
+   border: 1px solid #d4d4d4;
+   border-radius: 1em;
+   -webkit-transition: all 300ms;
+   -moz-transition: all 300ms;
+   transition: all 300ms;
+   position: relative;
+ }
+.switch div {
+  height: 1em;
+  width: 1em;
+  border-radius: 1em;
+  background: #FFF;
+  box-shadow: 0 0.1em 0.3em rgba(0,0,0,0.3);
+  -webkit-transition: all 300ms;
+  -moz-transition: all 300ms;
+  transition: all 300ms;
+}
+
+.switch input:checked + div {
+right: 0;
+}
+
+.switch input + div {
+left: 0;
+}
+
+#fileName-option::before {
+  content: '.txt';
+  position: absolute;
+  font-size: 0.7em;
+  color: #fff;
+  line-height: 1.5em;
+  right: 9px
+}
+#fileName-option input + div {
+  -webkit-transform: translate3d(1.5em, 0, 0);
+  -moz-transform: translate3d(1.5em, 0, 0);
+  transform: translate3d(1.5em, 0, 0);
+}
+
+#fileName-option input:checked + div {
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+#subtitle-option { width: 4.3em;}
+
+#subtitle-option::before {
+  content: 'text only';
+  position: absolute;
+  font-size: 0.7em;
+  color: #fff;
+  line-height: 1.5em;
+  right: 9px
+}
+
+#subtitle-option input + div {
+  -webkit-transform: translate3d(3.27em, 0, 0);
+  -moz-transform: translate3d(3.27em, 0, 0);
+  transform: translate3d(3.27em, 0, 0);
+}
+
+#subtitle-option input:checked + div {
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}

@@ -2,10 +2,38 @@ window.addEventListener("load", function() {
   console.log("POPUP: OnLoad")
   reload()
   var link = document.getElementById('res')
-  link.addEventListener('click', function() {
-    reload()
+  const fileName = document.querySelector('#fileName-option')
+  const subtitle = document.querySelector('#subtitle-option')
+  const subtitleInput = document.querySelector('#subtitle-option > input')
+
+  fileName.addEventListener('change', function(e) { 
+    if(!e.target.checked) { 
+      subtitleInput.checked = false
+      checkList.removeTimeLine = false
+      subtitle.classList.add('active')
+    }
+    addClass(e, 'downloadTxt') 
   })
+  subtitle.addEventListener('change', function(e) { 
+    if(!checkList.downloadTxt && e.target.checked) {
+      subtitleInput.checked = false
+      checkList.removeTimeLine = false
+      subtitle.classList.add('active')
+    } else {
+      addClass(e, 'removeTimeLine') 
+    }
+  })
+  link.addEventListener('click', function() { reload() })
 }, false)
+
+let checkList = { downloadTxt: true, removeTimeLine: true}
+
+function addClass(target, type) {
+  checkList[type] = !checkList[type]
+  if(!target.path[1].className.includes('active')) {
+    target.path[1].classList.add('active')
+  } else { target.path[1].classList.remove('active')}
+}
 
 function generateBtn (items, single) {
   items = JSON.parse(items)
@@ -57,6 +85,7 @@ function generateBtn (items, single) {
 let currentTab;
 let version = "1.0"
 let query = { active: true, currentWindow: true }
+
 function reload () {
   chrome.tabs.query(
     query,
@@ -70,19 +99,29 @@ function reload () {
   )
 }
 
-
 function download (e) {
   let url = e.path[0].dataset['url']
   let request = new XMLHttpRequest()
   request.open('GET', `${url}`, true)
   request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
-    let blob = new Blob([request.responseText], {type: "text/plain;charset=utf-8"});
-        saveAs(blob, `${e.path[0].innerHTML}.vtt`)
+    let text = request.responseText 
+    if (checkList.removeTimeLine) {
+      
+      text = text.replace(/(\d\d:.+)\s(\d\d:.+)/g, '').replace('WEBVTT', '')
+    }
+    let blob = new Blob([text], {type: "text/plain;charset=utf-8"});
+
+    if (checkList.downloadTxt) {
+      saveAs(blob, `${e.path[0].innerHTML}.txt`)
+    } else {
+      saveAs(blob, `${e.path[0].innerHTML}.vtt`)
+    }
     }
   }
   request.send()
 }
+
 function onAttach(tabId) {
   chrome.debugger.sendCommand({
       tabId: tabId
@@ -104,7 +143,6 @@ function allEventHandler(debuggeeId, message, params) {
         "requestId": params.requestId
     }, function(response) {
       try {
-        console.log({response})
         if (response.body && JSON.parse(response.body) && JSON.parse(response.body).category && JSON.parse(response.body).pagination) {
           generateBtn(response.body)
           chrome.debugger.detach(debuggeeId)
