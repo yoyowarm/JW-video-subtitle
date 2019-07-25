@@ -107,8 +107,7 @@ function download (e) {
     if (request.status >= 200 && request.status < 400) {
     let text = request.responseText 
     if (checkList.removeTimeLine) {
-      
-      text = text.replace(/(\d\d:.+)\s(\d\d:.+)/g, '%s').replace('WEBVTT', '%s').replace(/\s\s+/g, " ").replace(/%s/g, '')
+      text = text.replace(/(\d\d:.+)\s(\d\d:.+)/g, '%s').replace('WEBVTT', '').replace(/\s\s\s/g, '').replace(/%s/g, '')
     }
     let blob = new Blob([text], {type: "text/plain;charset=utf-8"});
 
