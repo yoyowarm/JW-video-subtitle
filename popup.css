@@ -18,12 +18,20 @@ body {
   height: auto;
   text-align: center;
   padding: 15px;
-  background: #2b2b2b;
+  background: #eceae7;
 }
-
+.noData {
+  width: auto;
+  min-height: 0px;
+  color: #2b2b2b;
+  background: #eee;
+  font-weight: 500;
+  font-size: 16px;
+}
+.noData p { margin: 0px }
 h1 {
-  font-size: 15px;
-  color: #fff;
+  font-size: 17px;
+  color: #555;
   padding-bottom: 15px;
   width: 80%;
   margin-left: 10%;
@@ -31,7 +39,7 @@ h1 {
 }
 h3 {
   font-size: 13px;
-  color: #c5c5c5;
+  color: #666;
   text-align: left;
   margin-bottom: 5px
 }
@@ -52,7 +60,7 @@ h3 {
   left: 0px;
   height: 53px;
   width: 100%;
-  background: #2b2b2b
+  background: #eceae7
 }
 #res {
   padding: 6px;
@@ -90,18 +98,18 @@ h3 {
 .first.column {
   margin-top: 25px;
   margin-bottom: 10px;
-  background: #d27830
+  background: #e36600
 }
 .first.column a { color: #fff}
 .first::before {
   content: '本頁影片';
   position: absolute;
   top: -25px;
-  color: #ddd;
+  color: #333;
   left: 0px;
   width: 100%;
   font-size: 13px;
-  border-bottom: 1px solid #fff
+  border-bottom: 1px solid #999
 }
 .first::after {
   content: '';
@@ -110,7 +118,7 @@ h3 {
   color: #fff;
   left: 0px;
   width: 100%;
-  border-top: 1px solid #fff
+  border-top: 1px solid #999
 }
 img {
   width: 17px;
@@ -123,7 +131,7 @@ img {
 
 
 .active {
-  background: #a749e6!important;
+  background: #6b479f!important;
 }
 .active#subtitle-option::before {
   content: 'time line';
@@ -156,7 +164,7 @@ img {
    margin-right: 15px;
    height: 1em;
    width: 2.5em;
-   background: #3e8ce6;
+   background: #4a6da7;
    border: 1px solid #d4d4d4;
    border-radius: 1em;
    -webkit-transition: all 300ms;

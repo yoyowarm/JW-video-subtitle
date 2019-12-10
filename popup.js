@@ -1,6 +1,17 @@
 window.addEventListener("load", function() {
   console.log("POPUP: OnLoad")
-  reload()
+  chrome.tabs.query({ url: 'https://www.jw.org/cmn-hant/%E5%A4%9A%E5%AA%92%E9%AB%94%E5%9C%96%E6%9B%B8%E9%A4%A8/%E5%BD%B1%E7%89%87/*'}, function (e) {
+    
+    let active = e.some((el) => { return el.active })
+    if(e.length < 1 || !active) { 
+      document.body.setAttribute("class", 'noData')
+      document.body.innerHTML = '<p>subtitle not detected</p>'
+    }
+  })
+  // chrome.runtime.sendMessage({onLoad: true}, function(response) {
+  // });
+  generateBtn()
+  // chrome.runtime.onMessage.addListener(messageReceived);
   var link = document.getElementById('res')
   const fileName = document.querySelector('#fileName-option')
   const subtitle = document.querySelector('#subtitle-option')
@@ -26,6 +37,9 @@ window.addEventListener("load", function() {
   link.addEventListener('click', function() { reload() })
 }, false)
 
+function messageReceived(msg) {
+   generateBtn(msg, true)
+}
 let checkList = { downloadTxt: true, removeTimeLine: true}
 
 function addClass(target, type) {
@@ -35,31 +49,15 @@ function addClass(target, type) {
   } else { target.path[1].classList.remove('active')}
 }
 
-function generateBtn (items, single) {
-  items = JSON.parse(items)
-  let medias 
-  let title = items.name
-  let buttons = []
-
-  if (single) {
-    medias = items.media
-  } else {
-    medias = items.category.media
-  }
-  
+function generateBtn () {
   let noData = document.getElementById("nodata");
-  if (buttons.length > 0) { noData.innerHTML = '目前沒有資料'} else { noData.innerHTML = ''}
-
-  medias.forEach( media => {
-    let data = {}
-    data.title = media.title
-    data.url = media.files[0].subtitles.url
-    if (single) {
-      buttons.unshift(data)
-    } else {
-      buttons.push(data)
-    }
-  }) 
+  let buttons = []
+  if(localStorage.buttons) {
+    buttons = JSON.parse(localStorage.buttons)
+    noData.innerHTML = ''
+  } else {
+    noData.innerHTML = '目前沒有資料'
+  }
   
   buttons.forEach( button => {
     let currentDiv = document.getElementById("container")
@@ -76,7 +74,7 @@ function generateBtn (items, single) {
       download(newLink)
     }
     newDiv.setAttribute("class", 'column')
-    if (single) { newDiv.setAttribute("class", 'first column') }
+    newDiv.setAttribute("class", 'first column')
     newDiv.appendChild(newLink)
     currentDiv.appendChild(newDiv)
   })
@@ -87,16 +85,10 @@ let version = "1.0"
 let query = { active: true, currentWindow: true }
 
 function reload () {
-  chrome.tabs.query(
-    query,
-    function(tabArray) {
-      chrome.tabs.update(tabArray[0].id, {url: tabArray[0].url})
-        currentTab = tabArray[0]
-        chrome.debugger.attach({
-            tabId: currentTab.id
-        }, version, onAttach.bind(null, currentTab.id))
-    }
-  )
+  chrome.tabs.query(query, function (arrayOfTabs) {
+    var code = 'window.location.reload();';
+    chrome.tabs.executeScript(arrayOfTabs[0].id, {code: code});
+});
 }
 
 function download (e) {
@@ -119,38 +111,4 @@ function download (e) {
     }
   }
   request.send()
-}
-
-function onAttach(tabId) {
-  chrome.debugger.sendCommand({
-      tabId: tabId
-  }, "Network.enable")
-
-  chrome.debugger.onEvent.addListener(allEventHandler);
-}
-
-function allEventHandler(debuggeeId, message, params) {
-  // console.log({debuggeeId, message, params})
-  if (currentTab.id != debuggeeId.tabId) {
-      return
-  }
-
-  if (message == "Network.responseReceived") {
-    chrome.debugger.sendCommand({
-        tabId: debuggeeId.tabId
-    }, "Network.getResponseBody", {
-        "requestId": params.requestId
-    }, function(response) {
-      try {
-        if (response.body && JSON.parse(response.body) && JSON.parse(response.body).category && JSON.parse(response.body).pagination) {
-          generateBtn(response.body)
-          chrome.debugger.detach(debuggeeId)
-        }
-        if (response.body && JSON.parse(response.body).media.length > 0) {
-          generateBtn(response.body, true)
-        }
-      } catch {
-      }
-    })
-  }
 }
