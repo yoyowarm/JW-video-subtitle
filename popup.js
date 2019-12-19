@@ -1,16 +1,23 @@
 window.addEventListener("load", function() {
   console.log("POPUP: OnLoad")
-  chrome.tabs.query({ url: 'https://www.jw.org/cmn-hant/%E5%A4%9A%E5%AA%92%E9%AB%94%E5%9C%96%E6%9B%B8%E9%A4%A8/%E5%BD%B1%E7%89%87/*'}, function (e) {
-    
-    let active = e.some((el) => { return el.active })
-    if(e.length < 1 || !active) { 
+  let noData = document.getElementById("nodata");
+  let buttons = []
+  if(localStorage.buttons) {
+    buttons = JSON.parse(localStorage.buttons)
+    noData.innerHTML = ''
+  } else {
+    noData.innerHTML = '目前沒有資料'
+  }
+  chrome.tabs.query({ url: 'https://www.jw.org/*'}, function (e) {
+    let active = e.some((el) => { return el.active && el.url.match('mediaitems') })
+    if(buttons.length < 1 || !active) { 
       document.body.setAttribute("class", 'noData')
       document.body.innerHTML = '<p>subtitle not detected</p>'
     }
   })
   // chrome.runtime.sendMessage({onLoad: true}, function(response) {
   // });
-  generateBtn()
+  generateBtn(buttons)
   // chrome.runtime.onMessage.addListener(messageReceived);
   var link = document.getElementById('res')
   const fileName = document.querySelector('#fileName-option')
@@ -49,16 +56,8 @@ function addClass(target, type) {
   } else { target.path[1].classList.remove('active')}
 }
 
-function generateBtn () {
-  let noData = document.getElementById("nodata");
-  let buttons = []
-  if(localStorage.buttons) {
-    buttons = JSON.parse(localStorage.buttons)
-    noData.innerHTML = ''
-  } else {
-    noData.innerHTML = '目前沒有資料'
-  }
-  
+function generateBtn (buttons) {
+  if (buttons.length < 1) return
   buttons.forEach( button => {
     let currentDiv = document.getElementById("container")
     let newText = document.createTextNode(`${button.title}`)
