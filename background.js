@@ -11,7 +11,7 @@ chrome.runtime.onStartup.addListener(() => {
 function listenWebRequest () {
   chrome.webRequest.onCompleted.addListener(
     function(details) {
-      if(details.initiator === 'https://www.jw.org' && details.url.match('https://data.jw-api.org/mediator/v1/media-items') && details.method === 'GET') {
+      if(details.initiator === 'https://www.jw.org' && details.url.match('/media-items') && details.method === 'GET') {
         sendAPI(details.url)
       }
     },

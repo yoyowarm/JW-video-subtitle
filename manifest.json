@@ -3,7 +3,7 @@
   
     "name": "JW Video subtitle download",
     "description": "This extension allows user to download the subtitle on jw.org library.",
-    "version": "2.1.1",
+    "version": "2.1.2",
 
     "icons": {
       "16": "logo.png",
