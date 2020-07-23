@@ -21,7 +21,6 @@
     "permissions": [
       "storage",
       "tabs",
-      "debugger",
       "alarms",
       "file://*/*",
       "https://*/*",
