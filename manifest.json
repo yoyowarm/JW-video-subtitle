@@ -21,10 +21,8 @@
     "permissions": [
       "storage",
       "tabs",
-      "file://*/*",
       "https://*/*",
       "http://*/*",
-      "webRequest",
-      "*://*.google.com/"
+      "webRequest"
     ]
   }
