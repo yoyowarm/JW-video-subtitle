@@ -8,41 +8,43 @@ chrome.runtime.onStartup.addListener(() => {
   listenWebRequest()
 });
 
-function listenWebRequest () {
+function listenWebRequest() {
   chrome.webRequest.onCompleted.addListener(
-    function(details) {
-      if(details.initiator === 'https://www.jw.org' && details.url.match('/media-items') && details.method === 'GET') {
+    function (details) {
+      if (details.initiator === 'https://www.jw.org' && details.url.match('/media-items') && details.url.match('VIDEO') && details.method === 'GET') {
         sendAPI(details.url)
       }
     },
-    {urls: ["<all_urls>"]}
+    { urls: ["<all_urls>"] }
   );
 }
 
-function sendAPI (url) {
+function sendAPI(url) {
   fetch(url)
-  .then(res => {
-    return res.json();
-}).then(result => {
-  saveData(result)
-})
+    .then(res => {
+      return res.json();
+    }).then(result => {
+      saveData(result)
+    })
 }
 
-function saveData (result) {
-  let medias = result.media
-  let buttons = []
-  if (medias.length < 1) return
-  medias.forEach( media => {
-    let data = {}
-    data.title = media.title
-    data.url = media.files[0].subtitles.url
+function saveData(result) {
 
-    buttons.unshift(data)
-  })
+  let medias = result.media[0]
+  let buttons = []
+  if (!medias) return
+  let data = {}
+  medias.files.forEach(element => {
+    if (element.subtitles) {
+      data.url = element.subtitles.url
+    }
+  });
+  data.title = medias.title
+  buttons.unshift(data)
   localStorage.setItem('buttons', JSON.stringify(buttons));
 }
 
-chrome.runtime.sendMessage({}, function(response) {
+chrome.runtime.sendMessage({}, function (response) {
 });
 
 chrome.runtime.onMessage.addListener(messageReceived);
